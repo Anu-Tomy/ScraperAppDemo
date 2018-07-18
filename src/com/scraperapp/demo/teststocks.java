@@ -19,12 +19,15 @@ public class teststocks {
 		
 		System.out.println(driver.getTitle()); 
 		
-		String xpath = "//*[@id=\"scr-res-table\"]/div[2]/table/tbody/tr[*]";
-		
-		List<WebElement> tableRows = driver.findElements(By.xpath(xpath));
-		
+		//String xpath = "//*[@id=\"scr-res-table\"]/div[2]/table/tbody/tr[*]";
+		String rows = "//*[@id=\"scr-res-table\"]/div[2]/table/tbody/tr[*]";
+		List<WebElement> tableRows = driver.findElements(By.xpath(rows));
 		System.out.println("No. of Rows: " + tableRows.size());
 		
+		String colmns = "//*[@id=\"scr-res-table\"]/div[1]/table/thead/tr/th[*]/span/span";
+		List<WebElement> tableColumns = driver.findElements(By.xpath(colmns));
+		System.out.println("No. of Columns: " + tableColumns.size());	
+				
 		for(int i = 0; i < 25; i++) {	
 			
 			System.out.println((i + 1) + " - " + tableRows.get(i).getText());
