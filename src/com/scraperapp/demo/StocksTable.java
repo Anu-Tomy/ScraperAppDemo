@@ -34,8 +34,11 @@ public class StocksTable {
 
 	      
 	      conn = getConnection();
-	      pstmt = conn.prepareStatement(sql.toString());
+	      pstmt = conn.prepareStatement(sql.toString()); 
 	      pstmt.executeUpdate();
+	      
+	      System.out.println("The Stocks table is created");
+	      
 	    } catch (Exception e) {
 	      e.printStackTrace();
 	    } finally {
