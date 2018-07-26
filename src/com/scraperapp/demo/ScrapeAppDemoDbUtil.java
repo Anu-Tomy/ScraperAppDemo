@@ -80,8 +80,8 @@ public class ScrapeAppDemoDbUtil {
 	      sql.append("symbol			VARCHAR(6), ");
 	      sql.append("name				VARCHAR(50), ");
 	      sql.append("price				DOUBLE PRECISION, ");
-	      sql.append("chang					DECIMAL(10,2), ");
-	      sql.append("percentChang			DECIMAL(10,2), ");
+	      sql.append("chang					DECIMAL(5,2), ");
+	      sql.append("percentChang			DECIMAL(5,2), ");
 	      sql.append("volum				VARCHAR(12), ");    
 	      sql.append("avgVol			VARCHAR(10), ");
 	      sql.append("marketCap			DOUBLE PRECISION, ");
