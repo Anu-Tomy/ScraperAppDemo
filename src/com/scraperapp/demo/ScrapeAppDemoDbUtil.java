@@ -17,13 +17,13 @@ public class ScrapeAppDemoDbUtil {
 
 	public static void main(String[] args) throws Exception {
 		
-		
+		dropOldTable();
 		createStocksTable();
 		scrapeData();
 		/*
 		 * getCookies
 		 * connectDb();
-		 * truncateOldTable();
+		 * dropOldTable();
 		 * createStocksTable();
 		 * scrapeData();
 		 * insertNewStocksData();	
@@ -33,6 +33,7 @@ public class ScrapeAppDemoDbUtil {
 		 */
 		
 	}	
+	
 	
 	public static Connection connectDb() throws Exception {
 		String url = "jdbc:mysql://localhost:3306/yahoo_finance_scraper?useSSL=false";
@@ -48,6 +49,27 @@ public class ScrapeAppDemoDbUtil {
 	    return conn;
 	  }
 		
+	public static void dropOldTable() throws SQLException {
+		Connection conn = null;
+		 PreparedStatement pstmt = null;
+		try {
+			//get connection to the database
+			 conn = connectDb();
+						 
+			//TRUNCATE Old TABLE data
+			 String mySqlQuery = "DROP TABLE stocksTable";
+			 pstmt = conn.prepareStatement(mySqlQuery);
+			 pstmt.executeUpdate(); 
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			conn.close();
+			pstmt.close();
+		}
+		System.out.println("Drop old table");
+	}
+
 	public static void createStocksTable() throws Exception{
 		
 	    PreparedStatement pstmt = null;
@@ -58,8 +80,8 @@ public class ScrapeAppDemoDbUtil {
 	      sql.append("symbol			VARCHAR(6), ");
 	      sql.append("name				VARCHAR(50), ");
 	      sql.append("price				DOUBLE PRECISION, ");
-	      sql.append("chang					DECIMAL(10,4), ");
-	      sql.append("percentChang			DECIMAL(10,4), ");
+	      sql.append("chang					DECIMAL(10,2), ");
+	      sql.append("percentChang			DECIMAL(10,2), ");
 	      sql.append("volum				VARCHAR(12), ");    
 	      sql.append("avgVol			VARCHAR(10), ");
 	      sql.append("marketCap			DOUBLE PRECISION, ");
@@ -77,25 +99,7 @@ public class ScrapeAppDemoDbUtil {
 	      e.printStackTrace();
 	    } 
 	  }
-	/*  	
-	private static void truncateOldStockData() throws SQLException {
-		
-		Connection conn = null;
-		try {
-			//get connection to the database
-			 conn = connectDb();
-			 
-			//TRUNCATE Old TABLE data
-			
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			conn.close();
-		}
-		
-	}
-	*/
+	
 	public static void scrapeData() throws Exception {
 		
 		System.setProperty("webdriver.chrome.driver", "C:\\Users\\tomya\\eclipse-workspace\\ScraperAppDemo\\WebContent\\WEB-INF\\lib\\chromedriver\\chromedriver.exe");
@@ -144,13 +148,11 @@ public class ScrapeAppDemoDbUtil {
 			try {
 				
 				insertNewStocksData(cell);
-				System.out.println("The Stocks table data is added to the database");
-				
+								
 			}catch (Exception e){
 				e.printStackTrace();
 			}
 			
-			System.out.println();
 		} 
 					
 		driver.close();
@@ -251,6 +253,7 @@ public class ScrapeAppDemoDbUtil {
 			conn.close();
 			pstmt.close();
 		}
+		System.out.println("The Stocks table data is added to the database");
 	}
 
 }
