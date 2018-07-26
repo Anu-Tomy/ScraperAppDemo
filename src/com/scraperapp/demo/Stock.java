@@ -5,16 +5,16 @@ public class Stock {
 	private int rowNumber;
 	private String symbol;
 	private String name;
-	private Double price;
-	private String chang;
-	private String percentChang;
+	private double price;
+	private double chang;
+	private double percentChang;
     private String volum;
     private String avgVol;
 	private double marketCap;
 	private String peRatio;
 	private double fiftTwoWkRange;
 	
-	public Stock(String symbol, String name, Double price, String chang, String percentChang, String volum,
+	public Stock(String symbol, String name, double price, double chang, double percentChang, String volum,
 			String avgVol, double marketCap, String peRatio, double fiftTwoWkRange) {
 		super();
 		this.symbol = symbol;
@@ -31,7 +31,7 @@ public class Stock {
 	
 	
 
-	public Stock(String symbol, String name, Double price, String chang, String percentChang, String volum,
+	public Stock(String symbol, String name, double price, double chang, double percentChang, String volum,
 			String avgVol, double marketCap, String peRatio) {
 		super();
 		this.symbol = symbol;
@@ -71,19 +71,19 @@ public class Stock {
 		this.price = price;
 	}
 
-	public String getChang() {
+	public double getChang() {
 		return chang;
 	}
 
-	public void setChang(String chang) {
+	public void setChang(double chang) {
 		this.chang = chang;
 	}
 
-	public String getPercentChang() {
+	public double getPercentChang() {
 		return percentChang;
 	}
 
-	public void setPercentChang(String percentChang) {
+	public void setPercentChang(double percentChang) {
 		this.percentChang = percentChang;
 	}
 
