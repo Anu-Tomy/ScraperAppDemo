@@ -58,8 +58,8 @@ public class ScrapeAppDemoDbUtil {
 	      sql.append("symbol			VARCHAR(6), ");
 	      sql.append("name				VARCHAR(50), ");
 	      sql.append("price				DOUBLE PRECISION, ");
-	      sql.append("chang				VARCHAR(15), ");
-	      sql.append("percentChang		VARCHAR(15), ");
+	      sql.append("chang					DECIMAL(10,4), ");
+	      sql.append("percentChang			DECIMAL(10,4), ");
 	      sql.append("volum				VARCHAR(12), ");    
 	      sql.append("avgVol			VARCHAR(10), ");
 	      sql.append("marketCap			DOUBLE PRECISION, ");
@@ -144,13 +144,13 @@ public class ScrapeAppDemoDbUtil {
 			try {
 				
 				insertNewStocksData(cell);
+				System.out.println("The Stocks table data is added to the database");
 				
 			}catch (Exception e){
 				e.printStackTrace();
 			}
 			
 			System.out.println();
-			System.out.print("Inserting data to DB\n");
 		} 
 					
 		driver.close();
@@ -175,8 +175,8 @@ public class ScrapeAppDemoDbUtil {
 			 String symbol = "";
 			 String name = "";
 			 Double price = 0.00;
-			 String chang = "";
-			 String percentChang = "";
+			 Double chang = 0.00;
+			 Double percentChang = 0.00;
 			 String volum = "";
 			 String avgVol = "";
 			 Double marketCap = 0.00;
@@ -201,11 +201,11 @@ public class ScrapeAppDemoDbUtil {
 		 					stock.setPrice(price);
 		 					break;
 		 					
-				 	case 3: chang = cell[3];
+				 	case 3: chang = Double.parseDouble(cell[3]);
 				 			stock.setChang(chang);
 				 			break;
 				 			
-				 	case 4: percentChang = cell[4];
+				 	case 4: percentChang = Double.parseDouble(cell[4]);
 		 					stock.setPercentChang(percentChang);
 		 					break;	
 		 					
@@ -236,16 +236,15 @@ public class ScrapeAppDemoDbUtil {
 			pstmt.setString(1, symbol);
 			pstmt.setString(2, name);
 			pstmt.setDouble(3, price);
-			pstmt.setString(4, chang);
-			pstmt.setString(5, percentChang);
+			pstmt.setDouble(4, chang);
+			pstmt.setDouble(5, percentChang);
 			pstmt.setString(6, volum);
 			pstmt.setString(7, avgVol);
 			pstmt.setDouble(8, marketCap);
 			pstmt.setString(9, peRatio);
 			
 			pstmt.executeUpdate();
-			System.out.println("The Stocks table data is added to the database");
-			
+						
 		}catch (Exception e) {
 			e.printStackTrace();
 		}finally {
