@@ -20,6 +20,7 @@ public class ScrapeAppDemoDbUtil {
 		dropOldTable();
 		createStocksTable();
 		scrapeData();
+		getStocksData();
 		/*
 		 * getCookies
 		 * connectDb();
@@ -28,13 +29,12 @@ public class ScrapeAppDemoDbUtil {
 		 * scrapeData();
 		 * insertNewStocksData();	
 		 * disconnectDb();
-		 * 
-		 * 
+		 * 		 * 
 		 */
 		
-	}	
+	}		
 	
-	
+
 	public static Connection connectDb() throws Exception {
 		String url = "jdbc:mysql://localhost:3306/yahoo_finance_scraper?useSSL=false";
 	    String username = "yahoo";
@@ -254,6 +254,56 @@ public class ScrapeAppDemoDbUtil {
 			pstmt.close();
 		}
 		System.out.println("The Stocks table data is added to the database");
+	}
+	
+	public static void getStocksData() throws Exception {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet myRs = null;
+		
+		try {
+			//get connection to the database
+			 conn = connectDb();
+			 
+			 String sql = "SELECT * FROM  stocksTable";
+			 pstmt = conn.prepareStatement(sql);
+			 myRs = pstmt.executeQuery();
+			 
+			 while(myRs.next()) {
+				 String symbol = myRs.getString("symbol");
+				 String name = myRs.getString("name");
+				 Double price = myRs.getDouble("price");
+				 Double chang = myRs.getDouble("chang");
+				 Double percentChang = myRs.getDouble("percentChang");
+				 String volum = myRs.getString("volum");
+				 String avgVol = myRs.getString("avgVol");
+				 Double marketCap = myRs.getDouble("marketCap");
+				 String peRatio = myRs.getString("peRatio");
+				 
+				 System.out.println(symbol + " " + name + " " + price + " " + chang + " " + percentChang + " " + volum + " " + avgVol + " " + marketCap + " " + peRatio);
+			 }
+			 
+			 
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				
+				if(myRs != null)
+					myRs.close();
+				if(pstmt != null)
+					pstmt.close();
+				if(conn != null)
+					conn.close();		
+			} catch (SQLException e ) {
+				e.printStackTrace();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	  		
 	}
 
 }
