@@ -18,16 +18,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class ScrapeAppDemoDbUtil {
 
 	public class DataSource {
+		private DataSource datasource;	
+		public DataSource(DataSource theDataSource) {
+			datasource = theDataSource;
+		}
 
 	}
 
 	public static void main(String[] args) throws Exception {
 		
-		private DataSource datasource;		
-		
-		public ScraperAppDemoDbUtil(DataSource theDataSource) {
-			datasource = theDataSource;
-		}
+//		
 		
 		
 		
