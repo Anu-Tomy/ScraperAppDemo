@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,7 +17,19 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 public class ScrapeAppDemoDbUtil {
 
+	public class DataSource {
+
+	}
+
 	public static void main(String[] args) throws Exception {
+		
+		private DataSource datasource;		
+		
+		public ScraperAppDemoDbUtil(DataSource theDataSource) {
+			datasource = theDataSource;
+		}
+		
+		
 		
 		dropOldTable();
 		createStocksTable();
@@ -298,12 +312,10 @@ public class ScrapeAppDemoDbUtil {
 					conn.close();		
 			} catch (SQLException e ) {
 				e.printStackTrace();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
-	  		
+				}catch (Exception e) {
+					e.printStackTrace();
+					}
+			}	
 	}
 
 }
