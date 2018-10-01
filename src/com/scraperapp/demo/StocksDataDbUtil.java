@@ -9,11 +9,11 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-public class ScrapeAppDemoStocksDbUtil {
+public class StocksDataDbUtil {
 
 	private static DataSource dataSource;	
 	
-	public ScrapeAppDemoStocksDbUtil(DataSource theDataSource) {
+	public StocksDataDbUtil(DataSource theDataSource) {
 		dataSource = theDataSource;
 	}
 		 

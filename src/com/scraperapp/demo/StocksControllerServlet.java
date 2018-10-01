@@ -16,24 +16,24 @@ import javax.sql.DataSource;
 /**
  * Servlet implementation class ScraperAppDemoServlet
  */
-@WebServlet("/ScraperAppDemoServlet")
-public class ScraperAppDemoServlet extends HttpServlet {
+@WebServlet("/StocksControllerServlet")
+public class StocksControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	//Define datasource/connection pool for Resource Injection
 	@Resource(name="jdbc/yahoo_finance_scraper")
 	private DataSource dataSource;	
 	
-	// initialize ScrapeAppDemoDbUtil
+	// initialize StocksDataDbUtil
 	
 	@Override
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
 		super.init();
 		
-		//Create scrapeAppDemoStocksDbUtil and pass conn pool/datasource
+		//Create StocksDataDbUtil and pass conn pool/datasource
 		try {
-			new ScrapeAppDemoStocksDbUtil(dataSource);
+			new StocksDataDbUtil(dataSource);
 		}
 		catch(Exception exc) {
 			throw new ServletException(exc);
@@ -56,8 +56,8 @@ public class ScraperAppDemoServlet extends HttpServlet {
 	}
 	private void getStocks(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		//get stocks data from ScrapeAppDemoStocksDbUtil
-		List<Stock> stocks = ScrapeAppDemoStocksDbUtil.getStocksData();
+		//get stocks data from StocksDataDbUtil
+		List<Stock> stocks = StocksDataDbUtil.getStocksData();
 		
 		//add stocks to the request
 		request.setAttribute("STOCKS_LIST", stocks);
