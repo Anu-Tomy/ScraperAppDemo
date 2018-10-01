@@ -1,11 +1,11 @@
+
 package com.scraperapp.demo;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,46 +19,54 @@ import javax.sql.DataSource;
 @WebServlet("/ScraperAppDemoServlet")
 public class ScraperAppDemoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    //Define datasource/connection pool for Resource Injection
+	
+	//Define datasource/connection pool for Resource Injection
 	@Resource(name="jdbc/yahoo_finance_scraper")
 	private DataSource dataSource;	
 	
-    public ScraperAppDemoServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	// initialize ScrapeAppDemoDbUtil
+	
+	@Override
+	public void init() throws ServletException {
+		// TODO Auto-generated method stub
+		super.init();
+		
+		//Create scrapeAppDemoStocksDbUtil and pass conn pool/datasource
+		try {
+			new ScrapeAppDemoStocksDbUtil(dataSource);
+		}
+		catch(Exception exc) {
+			throw new ServletException(exc);
+		}
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		Connection myConn = null;
-		
+		//get the stocks data
 		try {
-			// 1. Get a connection to database
-			myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/yahoo_finance_scraper", "yahoo" , "yahoo");
-			//myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/yahoo_finance_scraper?useSSL=false", "yahoo" , "yahoo");
+			getStocks(request, response);
 			
-			System.out.println("Database connection successful!");
-			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		catch (Exception exc) {
-			exc.printStackTrace();
-		}
-		finally {
-			
-			if (myConn != null) {
-				try {
-					myConn.close();
-				} catch (SQLException e) {				
-					e.printStackTrace();
-				}
-			}
-		}		
 		
-	} 
+	}
+	private void getStocks(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		//get stocks data from ScrapeAppDemoStocksDbUtil
+		List<Stock> stocks = ScrapeAppDemoStocksDbUtil.getStocksData();
+		
+		//add stocks to the request
+		request.setAttribute("STOCKS_LIST", stocks);
+		
+		//send to JSP page(view)
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/list-stocks-demo.jsp");
+		dispatcher.forward(request, response);
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

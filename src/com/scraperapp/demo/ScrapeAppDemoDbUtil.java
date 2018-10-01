@@ -3,12 +3,8 @@ package com.scraperapp.demo;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
-
-import javax.sql.DataSource;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -17,24 +13,13 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 public class ScrapeAppDemoDbUtil {
 
-	public class DataSource {
-		private DataSource datasource;	
-		public DataSource(DataSource theDataSource) {
-			datasource = theDataSource;
-		}
-
-	}
-
 	public static void main(String[] args) throws Exception {
 		
-//		
-		
-		
-		
+					
 		dropOldTable();
 		createStocksTable();
 		scrapeData();
-		getStocksData();
+	//	getStocksData();
 		/*
 		 * getCookies
 		 * connectDb();
@@ -46,9 +31,8 @@ public class ScrapeAppDemoDbUtil {
 		 * 		 * 
 		 */
 		
-	}		
+	}	
 	
-
 	public static Connection connectDb() throws Exception {
 		String url = "jdbc:mysql://localhost:3306/yahoo_finance_scraper?useSSL=false";
 	    String username = "yahoo";
@@ -65,13 +49,13 @@ public class ScrapeAppDemoDbUtil {
 		
 	public static void dropOldTable() throws SQLException {
 		Connection conn = null;
-		 PreparedStatement pstmt = null;
+		PreparedStatement pstmt = null;
 		try {
 			//get connection to the database
 			 conn = connectDb();
 						 
 			//TRUNCATE Old TABLE data
-			 String mySqlQuery = "DROP TABLE stocksTable";
+			 String mySqlQuery = "TRUNCATE TABLE stocksTable";
 			 pstmt = conn.prepareStatement(mySqlQuery);
 			 pstmt.executeUpdate(); 
 			
@@ -90,7 +74,8 @@ public class ScrapeAppDemoDbUtil {
 	    Connection conn = null;
 	    try {
 	      StringBuffer sql = new StringBuffer("CREATE TABLE stocksTable(");
-	      //sql.append("rowNumber			INTEGER, ");
+	      
+	      //sql.append("rowNumber			INTEGER NOT NULL AUTO_INCREMENT, ");
 	      sql.append("symbol			VARCHAR(6), ");
 	      sql.append("name				VARCHAR(50), ");
 	      sql.append("price				DOUBLE PRECISION, ");
@@ -100,9 +85,7 @@ public class ScrapeAppDemoDbUtil {
 	      sql.append("avgVol			VARCHAR(10), ");
 	      sql.append("marketCap			DOUBLE PRECISION, ");
 	      sql.append("peRatio			VARCHAR(10)) "); 
-	      //sql.append("fiftTwoWkRange		DOUBLE PRECISION)");
-
-	      
+	     	      
 	      conn = connectDb();
 	      pstmt = conn.prepareStatement(sql.toString()); 
 	      pstmt.executeUpdate();
@@ -149,7 +132,7 @@ public class ScrapeAppDemoDbUtil {
 				
 				if( j == 5 || j == 6 || j == 7  || j == 8) {
 					
-					String pattern = "[%,MB](?!\\d+.\\d+)";
+					String pattern = "[%,MBT](?!\\d+.\\d+)";
 					cellData = cellData.replaceAll(pattern, "");
 					cell[j-1] = cellData;
 					System.out.println(cell[j-1]);
@@ -158,7 +141,7 @@ public class ScrapeAppDemoDbUtil {
 					System.out.println(cell[j-1]);
 					}			
 			}
-			//System.out.print("Inserting data to DB\n");
+			System.out.print("Inserting data to DB\n");
 			try {
 				
 				insertNewStocksData(cell);
@@ -270,52 +253,6 @@ public class ScrapeAppDemoDbUtil {
 		System.out.println("The Stocks table data is added to the database");
 	}
 	
-	public static void getStocksData() throws Exception {
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet myRs = null;
-		
-		try {
-			//get connection to the database
-			 conn = connectDb();
-			 
-			 String sql = "SELECT * FROM  stocksTable";
-			 pstmt = conn.prepareStatement(sql);
-			 myRs = pstmt.executeQuery();
-			 
-			 while(myRs.next()) {
-				 String symbol = myRs.getString("symbol");
-				 String name = myRs.getString("name");
-				 Double price = myRs.getDouble("price");
-				 Double chang = myRs.getDouble("chang");
-				 Double percentChang = myRs.getDouble("percentChang");
-				 String volum = myRs.getString("volum");
-				 String avgVol = myRs.getString("avgVol");
-				 Double marketCap = myRs.getDouble("marketCap");
-				 String peRatio = myRs.getString("peRatio");
-				 
-				 System.out.println(symbol + " " + name + " " + price + " " + chang + " " + percentChang + " " + volum + " " + avgVol + " " + marketCap + " " + peRatio);
-			 }
-			 
-			 
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			try {
-				
-				if(myRs != null)
-					myRs.close();
-				if(pstmt != null)
-					pstmt.close();
-				if(conn != null)
-					conn.close();		
-			} catch (SQLException e ) {
-				e.printStackTrace();
-				}catch (Exception e) {
-					e.printStackTrace();
-					}
-			}	
-	}
-
 }
+
+

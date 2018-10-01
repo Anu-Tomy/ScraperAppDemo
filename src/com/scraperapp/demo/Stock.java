@@ -2,7 +2,7 @@ package com.scraperapp.demo;
 
 public class Stock {
 	
-	private int rowNumber;
+	//private int rowNumber;
 	private String symbol;
 	private String name;
 	private double price;
@@ -12,7 +12,7 @@ public class Stock {
     private String avgVol;
 	private double marketCap;
 	private String peRatio;
-	private double fiftTwoWkRange;
+	
 	
 	public Stock(String symbol, String name, double price, double chang, double percentChang, String volum,
 			String avgVol, double marketCap, String peRatio, double fiftTwoWkRange) {
@@ -26,7 +26,7 @@ public class Stock {
 		this.avgVol = avgVol;
 		this.marketCap = marketCap;
 		this.peRatio = peRatio;
-		this.fiftTwoWkRange = fiftTwoWkRange;
+		//this.fiftTwoWkRange = fiftTwoWkRange;
 	}
 	
 	
@@ -44,7 +44,6 @@ public class Stock {
 		this.marketCap = marketCap;
 		this.peRatio = peRatio;
 	}
-
 
 
 	public String getSymbol() {
@@ -119,15 +118,15 @@ public class Stock {
 		this.peRatio = peRatio;
 	}
 
-	public double getFiftTwoWkRange() {
-		return fiftTwoWkRange;
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Stock [symbol=" + symbol + ", name=" + name + ", price=" + price + ", chang=" + chang
+				+ ", percentChang=" + percentChang + ", volum=" + volum + ", avgVol=" + avgVol + ", marketCap="
+				+ marketCap + ", peRatio=" + peRatio + "]";
 	}
-
-	public void setFiftTwoWkRange(double fiftTwoWkRange) {
-		this.fiftTwoWkRange = fiftTwoWkRange;
-	}
-	
-	
 
 }
 
